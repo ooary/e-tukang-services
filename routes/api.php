@@ -18,6 +18,6 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 Route::group(['prefix'=>'v1'],function(){
-
+	Route::post('auth/signin','Api\V1\AuthController@signIn');
 	Route::post('/registercustomer','Api\V1\RegisterController@storeCustomer');
 });

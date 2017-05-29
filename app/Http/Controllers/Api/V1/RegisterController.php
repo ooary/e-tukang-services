@@ -26,10 +26,15 @@ class RegisterController extends Controller
     								 'Status'=>422]);
     	}
 
-    	$data = $request->all();
-    	$data['password'] = bcrypt($data['password']);
-    	$data['role']='pelanggan';
-    	$storeUserTable = User::create($data);
+    	$data = $request->except('password');
+   
+    	// $data['password'] = bcrypt($request->get('password'));
+    	// $data['role']='pelanggan';
+     //    dd($data);
+
+    	$storeUserTable = User::create(['role'=>"pelanggan",
+                                        'email'=>$request->get('email'),
+                                         'password'=>bcrypt($request->get('password'))]);
     	$storeUserTable->pelanggan()->create($data);
 
     	return Response()->json(['status'=>200]);
