@@ -20,4 +20,6 @@ Route::get('/user', function (Request $request) {
 Route::group(['prefix'=>'v1'],function(){
 	Route::post('auth/signin','Api\V1\AuthController@signIn');
 	Route::post('/registercustomer','Api\V1\RegisterController@storeCustomer');
+	Route::post('/registertukang','Api\V1\RegisterController@storeTukang');
+
 });
