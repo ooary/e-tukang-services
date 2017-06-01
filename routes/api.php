@@ -21,5 +21,10 @@ Route::group(['prefix'=>'v1'],function(){
 	Route::post('auth/signin','Api\V1\AuthController@signIn');
 	Route::post('/registercustomer','Api\V1\RegisterController@storeCustomer');
 	Route::post('/registertukang','Api\V1\RegisterController@storeTukang');
+	
+	Route::post('/order','Api\V1\OrdersController@doOrder');
+	Route::post('/cancelorder','Api\V1\OrdersController@cancelOrder');
+	Route::post('/acceptpayment','Api\V1\OrdersController@acceptpayment');
+
 
 });
