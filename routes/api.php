@@ -27,4 +27,5 @@ Route::group(['prefix'=>'v1'],function(){
 	Route::post('/acceptpayment','Api\V1\OrdersController@acceptpayment');
 
 
+	Route::get('/tukang','Api\V1\HomeController@getTukang');
 });
