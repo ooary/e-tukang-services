@@ -80,4 +80,22 @@ class OrdersController extends Controller
    		return Response()->json(['status'=>200]);
    		
     }
+
+    public function myOrder(Request $request){
+      /**
+      
+        TODO:
+        - RENCANA MAKE METHOD GET
+        - TRY WITH POST METHOD
+        - LOAD SEMUA DI AWAL
+        - OPSI KEDUA LOAD SEPERLUNYA
+      
+       */
+      //https://stackoverflow.com/questions/19852927/get-specific-columns-using-with-function-in-laravel-eloquent
+      $payload = Order::with('tukang')->where('id_pelanggan',$request->id_pelanggan)->get();
+
+      return Response()->json(['order'=>$payload]);
+
+ 
+    }
 }

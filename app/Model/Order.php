@@ -31,11 +31,19 @@ class Order extends Model
      */
 
     public function tukang(){
-    	return $this->belongsTo('App\Tukang','id_tukang');
+    	return $this->belongsTo('App\Model\Tukang','id_tukang')->select("id_tukang",
+                                                                        "id_user",
+                                                                        "nama_tukang",
+                                                                         "alamat",
+                                                                        "no_hp",
+                                                                         "keahlian",
+                                                                        "status",
+                                                                        "upah_jasa",
+                                                                         "foto");
     }
     
     public function pelanggan(){
-    	return $this->belongsTo('App\Tukang','id_pelanggan');
+    	return $this->belongsTo('App\Model\Tukang','id_pelanggan');
     }
 
 

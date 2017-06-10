@@ -23,6 +23,7 @@ Route::group(['prefix'=>'v1'],function(){
 	Route::post('/registertukang','Api\V1\RegisterController@storeTukang');
 	
 	Route::post('/order','Api\V1\OrdersController@doOrder');
+	Route::post('/ordered','Api\V1\OrdersController@myOrder');
 	Route::post('/cancelorder','Api\V1\OrdersController@cancelOrder');
 	Route::post('/acceptpayment','Api\V1\OrdersController@acceptpayment');
 
