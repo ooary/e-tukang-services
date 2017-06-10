@@ -13,11 +13,26 @@ class OrdersController extends Controller
     public function doOrder(Request $request){
 
     	$data = $request->all();
+      $file = $request->input('foto');
+    	if(!empty($file)){
+            
+        //https://stackoverflow.com/questions/42246478/image-is-not-uploading-to-server-using-laravel-api-while-working-with-core-php-a
+        $decodedImage = base64_decode($file);
+    
+        //  $base64_str = substr($file, strpos($file, ",")+1);
+        //  $fileDecode = base64_decode($base64_str);
+        //  dd($base64_str);
+     
+        // $fileEncode = base64_encode($file);
 
-    	if($request->hasFile('photo')){
-    		$fileName = $file->getClientOriginalName();
-       	    $path     = public_path() . DIRECTORY_SEPARATOR . 'kerusakan';
-   	     	$file ->move($path,$fileName);
+        // dd($fileEncode);
+        // $fileBase64 = base64_decode($fileEncode);
+
+    		$fileName = 'uploaded'.rand(1,100).'.'.'jpg';
+       	$path     = public_path() . DIRECTORY_SEPARATOR . 'kerusakan/'.$fileName;
+
+        file_put_contents($path,$decodedImage);
+   	    // $filebase ->move($path,$fileName);
     		$data['foto']=$fileName;
 
     	}

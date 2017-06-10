@@ -12,6 +12,7 @@ class Order extends Model
 						  'id_pelanggan',
 						  'id_tukang',
 						  'nama_kerusakan',
+                          'alamat',
 							'keterangan',
 							'foto',
 							'long',
