@@ -58,7 +58,7 @@ class OrdersController extends Controller
    		$cancelOrder = Order::find($data['id_pemesanan']);
    		if(empty($cancelOrder->whos_cancel)){
    			$data['status_pemesanan'] = 'canceled';
-   			$data['whos_cancel'] = $data['id_cancel'];
+   			$data['whos_cancel'] = $data['role'];
    			$cancelOrder->update($data);
 
    			return Response()->json(['status'=>200]);
@@ -92,10 +92,28 @@ class OrdersController extends Controller
       
        */
       //https://stackoverflow.com/questions/19852927/get-specific-columns-using-with-function-in-laravel-eloquent
-      $payload = Order::with('tukang')->where('id_pelanggan',$request->id_pelanggan)->get();
+      $payload = Order::select('id_pemesanan','nama_kerusakan','total_biaya','tgl_order','alamat','status_pemesanan')->where('id_pelanggan',$request->id_pelanggan)->where('whos_cancel',null)->get();
 
       return Response()->json(['order'=>$payload]);
 
  
+    }
+
+    public function detailOrder(Request $request,$id){
+
+      $payload = Order::where('id_pemesanan',$id)->first();
+
+      return Response()->json($payload);
+    }
+
+    public function myHistory(Request $request){
+      $data = $request->all();
+      $payload = Order::where('id_pelanggan',$data['id_pelanggan'])->where('status_pemesanan',"canceled")->orWhere('status_pemesanan','success')->get();
+      return Response()->json(['histories'=>$payload]);
+    }
+
+    public function detailHistory(Request $request,$id){
+      $payload = Order::where('id_pemesanan',$id)->first();
+      return Response()->json($payload);
     }
 }

@@ -17,7 +17,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
 
-Route::group(['prefix'=>'v1'],function(){
+Route::group(['middleware'=>'api','prefix'=>'v1'],function(){
 	Route::post('auth/signin','Api\V1\AuthController@signIn');
 	Route::post('/registercustomer','Api\V1\RegisterController@storeCustomer');
 	Route::post('/registertukang','Api\V1\RegisterController@storeTukang');
@@ -26,7 +26,9 @@ Route::group(['prefix'=>'v1'],function(){
 	Route::post('/ordered','Api\V1\OrdersController@myOrder');
 	Route::post('/cancelorder','Api\V1\OrdersController@cancelOrder');
 	Route::post('/acceptpayment','Api\V1\OrdersController@acceptpayment');
-
+	Route::get('/ordered/{id}','Api\V1\OrdersController@detailOrder');
+	Route::post('/history','Api\V1\OrdersController@myHistory');
+	Route::get('/history/{id}','Api\V1\OrdersController@detailHistory');
 
 	Route::get('/tukang','Api\V1\HomeController@getTukang');
 });
