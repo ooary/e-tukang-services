@@ -73,8 +73,9 @@ class OrdersController extends Controller
     public function acceptPayment(Request $request){
     	$data = $request->all();
    		$cancelOrder = Order::find($data['id_pemesanan']);
-   		$data['status_pembayaran'] = 'Done';
+   		$data['status_pembayaran'] = 'lunas';
    		$data['tgl_selesai']= date('Y-m-d');
+      $data['status_pemesanan']='selesai';
    		$cancelOrder->update($data);
 
    		return Response()->json(['status'=>200]);
@@ -92,7 +93,7 @@ class OrdersController extends Controller
       
        */
       //https://stackoverflow.com/questions/19852927/get-specific-columns-using-with-function-in-laravel-eloquent
-      $payload = Order::select('id_pemesanan','nama_kerusakan','total_biaya','tgl_order','alamat','status_pemesanan')->where('id_pelanggan',$request->id_pelanggan)->where('whos_cancel',null)->get();
+      $payload = Order::select('id_pemesanan','nama_kerusakan','total_biaya','tgl_order','alamat','status_pemesanan')->where('id_pelanggan',$request->id_pelanggan)->where('whos_cancel',null)->where('status_pemesanan','!=','selesai')->get();
 
       return Response()->json(['order'=>$payload]);
 
@@ -102,13 +103,15 @@ class OrdersController extends Controller
     public function detailOrder(Request $request,$id){
 
       $payload = Order::where('id_pemesanan',$id)->first();
-
-      return Response()->json($payload);
+      $dataTukang = Tukang::select('no_hp')->where('id_tukang',$payload->id_tukang)->first();
+      return Response()->json(['order'=>$payload,
+                               'tukang'=>$dataTukang]);
     }
 
     public function myHistory(Request $request){
       $data = $request->all();
-      $payload = Order::where('id_pelanggan',$data['id_pelanggan'])->where('status_pemesanan',"canceled")->orWhere('status_pemesanan','success')->get();
+      $payload = Order::where('id_pelanggan',$data['id_pelanggan'])->orWhere('status_pemesanan',"canceled")->orWhere('status_pemesanan','selesai')->get();
+
       return Response()->json(['histories'=>$payload]);
     }
 

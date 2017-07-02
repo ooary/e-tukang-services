@@ -31,7 +31,12 @@ class AuthController extends Controller
 
         // all good so return the token
         // RETURN DATA
-        $pelanggan = $request->user()->pelanggan->toArray();
+        if($request->user()->role =="pelanggan"){
+             $pelanggan = $request->user()->pelanggan->toArray();
+        }else{
+             $pelanggan = $request->user()->tukang->toArray();
+        }
+
         return response()->json(['token'=>$token,
         						  'users'=>Auth::user(),
         						  'status'=>"success"]);
