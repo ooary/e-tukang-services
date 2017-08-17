@@ -16,7 +16,10 @@ class Tukang extends Model
 							'keahlian',
 							'status',
 							'upah_jasa',
+							'status_aktif',
+							'topup',
 							'foto'];
+	protected $appends = ['jumlah'];
     /**
 	 *
 	 * RELATION 
@@ -26,5 +29,13 @@ class Tukang extends Model
 	public function user(){
 		return $this->belongsTo('App\Model\User','id_user');
 		
+	}
+
+	public function orders(){
+		return $this->hasMany('App\Model\Order','id_tukang');
+	}
+
+	public function getJumlahAttribute(){
+		return $this->orders()->where('status_pemesanan','selesai')->count();
 	}
 }

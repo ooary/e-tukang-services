@@ -22,7 +22,8 @@ class Order extends Model
 							'tgl_order',
 							'tgl_selesai',
 							'total_biaya',
-                            'whos_cancel'];
+                            'whos_cancel',
+                            'deadline'];
 
     /**
      *
@@ -43,7 +44,7 @@ class Order extends Model
     }
     
     public function pelanggan(){
-    	return $this->belongsTo('App\Model\Tukang','id_pelanggan');
+    	return $this->belongsTo('App\Model\Pelanggan','id_pelanggan');
     }
 
 

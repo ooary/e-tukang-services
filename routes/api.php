@@ -30,6 +30,9 @@ Route::group(['middleware'=>'api','prefix'=>'v1'],function(){
 	Route::post('/history','Api\V1\OrdersController@myHistory');
 	Route::get('/history/{id}','Api\V1\OrdersController@detailHistory');
 
+	Route::get('/tukang/{id}','Api\V1\OrdersController@getData');
+
+	Route::post('/saldo','Api\V1\HomeController@getSaldo');
 	Route::post('/tukang/myorder','Api\V1\TukangController@getMyOrder');
 	Route::get('/tukang/myorder/{id}','Api\V1\TukangController@detailOrder');
 	Route::post('tukang/acceptorder','Api\V1\TukangController@acceptOrder');

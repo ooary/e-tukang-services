@@ -12,9 +12,15 @@ class HomeController extends Controller
     //
 
 	public function getTukang(){
-		$dataTukang = Tukang::all();
-
+		$dataTukang = Tukang::where('status_aktif',0)->where('topup','>',0)->get();
+				
 		return Response()->json(['status'=>200,
 								 'dataTukang'=>$dataTukang]);
+	}
+
+	public function getSaldo(Request $request){
+		$saldo = Tukang::select('topup')->where('id_tukang',$request->id_tukang)->first();
+
+		return Response()->json(['saldo'=>$saldo]);
 	}
 }

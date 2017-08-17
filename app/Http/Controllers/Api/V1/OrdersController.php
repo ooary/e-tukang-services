@@ -6,11 +6,18 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Order;
 use App\Model\Tukang;
+use DB;
 class OrdersController extends Controller
 {
     //
-
+    public function getData(Request $request,$id){
+      $payload = Tukang::where('id_tukang',$id)->first();
+      // dd($payload->jumlah);
+      return Response()->json(['tukang'=>$payload]);
+    }
     public function doOrder(Request $request){
+
+     
 
     	$data = $request->all();
       $file = $request->input('foto');
@@ -28,7 +35,7 @@ class OrdersController extends Controller
         // dd($fileEncode);
         // $fileBase64 = base64_decode($fileEncode);
 
-    		$fileName = 'uploaded'.rand(1,100).'.'.'jpg';
+    		$fileName = 'uploaded'.rand(1,10000).'.'.'jpg';
        	$path     = public_path() . DIRECTORY_SEPARATOR . 'kerusakan/'.$fileName;
 
         file_put_contents($path,$decodedImage);
@@ -39,10 +46,10 @@ class OrdersController extends Controller
     	/**
     	 *
     	 * Biaya fix
-    	 *
+    	 * setiap order di potong 10000
     	 */
-    	$costTukang = Tukang::select('upah_jasa')->where('id_tukang',$request->get('id_tukang'))->first();
-    	$data['total_biaya'] = $costTukang->upah_jasa;
+    	// $costTukang = Tukang::select('upah_jasa')->where('id_tukang',$request->get('id_tukang'))->first();
+    	// $data['total_biaya'] = $costTukang->upah_jasa;
     	//// ========================////////
     	$data['status_pembayaran']='belum di bayar';
     	$data['status_pemesanan']='proses';
@@ -56,6 +63,11 @@ class OrdersController extends Controller
     public function cancelOrder(Request $request){
     	$data = $request->all();
    		$cancelOrder = Order::find($data['id_pemesanan']);
+
+      $tukang = DB::table('tukang')
+               ->where('id_tukang',$cancelOrder->id_tukang)
+               ->update(['status_aktif'=>0]);
+
    		if(empty($cancelOrder->whos_cancel)){
    			$data['status_pemesanan'] = 'canceled';
    			$data['whos_cancel'] = $data['role'];
@@ -73,6 +85,10 @@ class OrdersController extends Controller
     public function acceptPayment(Request $request){
     	$data = $request->all();
    		$cancelOrder = Order::find($data['id_pemesanan']);
+      $tukang = DB::table('tukang')
+               ->where('id_tukang',$cancelOrder->id_tukang)
+               ->update(['status_aktif'=>0]);
+
    		$data['status_pembayaran'] = 'lunas';
    		$data['tgl_selesai']= date('Y-m-d');
       $data['status_pemesanan']='selesai';
@@ -102,7 +118,8 @@ class OrdersController extends Controller
 
     public function detailOrder(Request $request,$id){
 
-      $payload = Order::where('id_pemesanan',$id)->first();
+      $payload = Order::with('tukang')->where('id_pemesanan',$id)->first();
+
       $dataTukang = Tukang::select('no_hp')->where('id_tukang',$payload->id_tukang)->first();
       return Response()->json(['order'=>$payload,
                                'tukang'=>$dataTukang]);
@@ -110,8 +127,10 @@ class OrdersController extends Controller
 
     public function myHistory(Request $request){
       $data = $request->all();
-      $payload = Order::where('id_pelanggan',$data['id_pelanggan'])->orWhere('status_pemesanan',"canceled")->orWhere('status_pemesanan','selesai')->get();
-
+      $payload = Order::where('id_pelanggan',$data['id_pelanggan'])
+      ->Where('status_pemesanan','!=','proses')
+      ->Where('status_pemesanan','!=','sedang menuju ke lokasi')
+      ->get();
       return Response()->json(['histories'=>$payload]);
     }
 
