@@ -7,6 +7,7 @@
 @section('page_title','Data Pemesanan')
 @section('page_child_title','Daftar Data Pemesanan')
 @section('content')
+<a href="{{url('pemesanan/report')}}" class="btn btn-primary pull-right">Report </a>
 <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
   <thead>
     <tr>

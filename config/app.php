@@ -187,6 +187,8 @@ return [
          Collective\Html\HtmlServiceProvider::class,
          UxWeb\SweetAlert\SweetAlertServiceProvider::class,
          ConsoleTVs\Charts\ChartsServiceProvider::class,
+         Barryvdh\DomPDF\ServiceProvider::class,
+
 
     ],
 
@@ -241,6 +243,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
          'Alert' => UxWeb\SweetAlert\SweetAlert::class,
          'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
+         'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

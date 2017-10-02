@@ -28,6 +28,8 @@ Route::group(['middleware'=>'auth'],function(){
 	Route::post('tukang','TukangController@store');
 	Route::delete('tukang/{id}','TukangController@destroy')->name('tukang.destroy');
 	Route::get('pemesanan','OrdersController@index');
+	Route::get('pemesanan/report','OrdersController@report');
+
 	Route::post('pemesanan/map','OrdersController@getMap');
 });
 
